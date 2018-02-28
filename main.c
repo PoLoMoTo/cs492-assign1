@@ -12,7 +12,7 @@ struct product {
 	struct product* next;
 };
 
-struct product** head = NULL;
+struct product* head = NULL;
 int remaining_products = 0;
 
 pthread_mutex_t access_queue;
@@ -61,24 +61,23 @@ int main(int argc, char const *argv[]){
 }
 
 void* producer(int* i){
-	while (remaining_products){
+	while (1){
 		//Obtain lock on the queue
 		pthread_mutex_lock(&access_queue);
 		if (!remaining_products){
 			pthread_mutex_unlock(&access_queue);
  			pthread_exit(NULL);
 		}
+
 		//Create the new product, add it to the queue, and decrement the count of remaining products to produce
-		struct product* new_product = (struct product*) malloc(sizeof(struct product));
+		struct product* new_product = malloc(sizeof(struct product));
 		new_product->productID = remaining_products;
 		new_product->next = NULL;
 
 		if (head == NULL)
-			head = &new_product;
-		else if (*head == NULL)
-			*head = new_product;
+			head = new_product;
 		else {
-			struct product* last = *head;
+			struct product* last = head;
 			while (last->next != NULL)
 				last = last->next;
 			last->next = new_product;
@@ -86,12 +85,12 @@ void* producer(int* i){
 
 		printf("Produced Product #%d\n", remaining_products);
 		printf("Queue: ");
-		struct product* last = *head;
-		while (last->next != NULL){
-			printf("%d, ", last->productID);
-			last = last->next;
+		struct product* lasttwo = head;
+		while (lasttwo->next != NULL){
+			printf("%d, ", lasttwo->productID);
+			lasttwo = lasttwo->next;
 		}
-		printf("%d\n", last->productID);
+		printf("%d\n", lasttwo->productID);
 
 		remaining_products--;
 
@@ -101,18 +100,26 @@ void* producer(int* i){
 		// Sleep for 100 milliseconds
 		usleep(100000);
 	}
- 	pthread_exit(NULL);
 }
 
 void* consumer(int* i){
-	while(head == NULL){}
+	/*while(head == NULL){}
 	while (*head != NULL || remaining_products){
 		// Obtain lock on the queue
 		pthread_mutex_lock(&access_queue);
 
+		printf("Queue: ");
+		struct product* last = *head;
+		while (last->next != NULL){
+			printf("%d, ", last->productID);
+			last = last->next;
+		}
+		printf("%d\n", last->productID);
+
 		// Pull first item from the queue
 		struct product* current_product = *head;
 		*head = current_product->next;
+
 		printf("Consumed Product ID: %d\n", current_product->productID);
 		free(current_product);
 
@@ -121,6 +128,6 @@ void* consumer(int* i){
 
 		// Sleep for 100 milliseconds
 		usleep(100000);
-	}
+	}*/
  	pthread_exit(NULL);
 }
