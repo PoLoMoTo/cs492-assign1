@@ -1,13 +1,13 @@
 # Name of your program:
 NAME=assign1
 
-# List of all .cpp source code files included in your program (separated by spaces):
-SRC=main.cpp
+# List of all .c source code files included in your program (separated by spaces):
+SRC=main.c
 
 
 
 SRCPATH=./
-OBJ=$(addprefix $(SRCPATH), $(SRC:.cpp=.o))
+OBJ=$(addprefix $(SRCPATH), $(SRC:.c=.o))
 
 RM=rm -f
 INCPATH=includes
@@ -15,7 +15,7 @@ CPPFLAGS+= -I $(INCPATH)
 
 
 all: $(OBJ)
-	g++ $(OBJ) -o $(NAME) -lpthread
+	gcc $(OBJ) -o $(NAME) -lpthread
 
 clean:
 	-$(RM) *~
