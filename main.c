@@ -62,18 +62,21 @@ int main(int argc, char const *argv[]){
 
 void* producer(int* i){
 	while (1){
-		//Obtain lock on the queue
+		// Obtain lock on the queue
 		pthread_mutex_lock(&access_queue);
+
+		// Make sure there are more products
 		if (!remaining_products){
 			pthread_mutex_unlock(&access_queue);
  			pthread_exit(NULL);
 		}
 
-		//Create the new product, add it to the queue, and decrement the count of remaining products to produce
+		// Create the new product
 		struct product* new_product = malloc(sizeof(struct product));
 		new_product->productID = remaining_products;
 		new_product->next = NULL;
 
+		// Add new product to the queue, create queue if needed
 		if (head == NULL)
 			head = new_product;
 		else {
@@ -83,15 +86,7 @@ void* producer(int* i){
 			last->next = new_product;
 		}
 
-		printf("Produced Product #%d\n", remaining_products);
-		printf("Queue: ");
-		struct product* lasttwo = head;
-		while (lasttwo->next != NULL){
-			printf("%d, ", lasttwo->productID);
-			lasttwo = lasttwo->next;
-		}
-		printf("%d\n", lasttwo->productID);
-
+		// Decrement the count of remaining products to produce
 		remaining_products--;
 
 		// Release the lock on the queue
@@ -103,24 +98,15 @@ void* producer(int* i){
 }
 
 void* consumer(int* i){
-	/*while(head == NULL){}
-	while (*head != NULL || remaining_products){
+	while (head != NULL || remaining_products){
 		// Obtain lock on the queue
 		pthread_mutex_lock(&access_queue);
 
-		printf("Queue: ");
-		struct product* last = *head;
-		while (last->next != NULL){
-			printf("%d, ", last->productID);
-			last = last->next;
-		}
-		printf("%d\n", last->productID);
-
 		// Pull first item from the queue
-		struct product* current_product = *head;
-		*head = current_product->next;
+		struct product* current_product = head;
+		head = current_product->next;
 
-		printf("Consumed Product ID: %d\n", current_product->productID);
+		// Free the pulled node
 		free(current_product);
 
 		// Release the lock on the queue
@@ -128,6 +114,6 @@ void* consumer(int* i){
 
 		// Sleep for 100 milliseconds
 		usleep(100000);
-	}*/
+	}
  	pthread_exit(NULL);
 }
