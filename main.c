@@ -40,10 +40,14 @@ int queueLength(){
 }
 
 int main(int argc, char const *argv[]){
+
+	// Check for the proper number of arguments
 	if (argc < 8 || argc > 8){
 		printf("Incorrect number of arguments!");
 		return 2;
 	}
+
+	// Assign the arguments
 	int prodThreads = strtol(argv[1], NULL, 10);
 	int consumThreads = strtol(argv[2], NULL, 10);
 	remaining_products = strtol(argv[3], NULL, 10);
@@ -52,10 +56,13 @@ int main(int argc, char const *argv[]){
 	int quantum = *argv[6];
 	unsigned int seed = strtol(argv[7], NULL, 10);
 
+	// Initialize the random number generator with the seed
 	srand(seed);
 
+	// Initialize the queue lock
 	pthread_mutex_init(&access_queue, NULL);
 
+	// Create threads for the consumers and producers
 	pthread_t prod_thread[prodThreads];
 	pthread_t consum_thread[consumThreads];
 	int prodn[prodThreads];
@@ -64,23 +71,23 @@ int main(int argc, char const *argv[]){
 	void* producer();
 	void* consumer();
 
+	// Initialize the threads
 	for (int i = 0; i < prodThreads; i++){
 		prodn[i] = i;
 		pthread_create(&prod_thread[i], NULL, producer, &prodn[i]);
 	}
-
 	for (int i = 0; i < consumThreads; i++){
 		consumn[i] = i;
 		pthread_create(&consum_thread[i], NULL, consumer, &consumn[i]);
 	}
 
-
+	// Start the threads
 	for (int i = 0; i < prodThreads; i++)
 		pthread_join(prod_thread[i], NULL);
-
 	for (int i = 0; i < consumThreads; i++)
 		pthread_join(consum_thread[i], NULL);
 
+	// Wait for all threads the exit then quit.
 	pthread_exit(0);
 }
 
@@ -91,6 +98,7 @@ void* producer(int* i){
 
 		// Make sure there are more products
 		if (remaining_products <= 0){
+			// No more products to produce, release the queue and exit thread
 			pthread_mutex_unlock(&access_queue);
  			pthread_exit(NULL);
 		} else if (maxQueue == 0 || queueLength() < maxQueue){
@@ -149,5 +157,7 @@ void* consumer(int* i){
 		// Sleep for 100 milliseconds
 		usleep(100000);
 	}
+
+	// The queue is empty and there are no more products for the producers to produce so exit
  	pthread_exit(NULL);
 }
