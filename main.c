@@ -139,8 +139,12 @@ void* consumer(int* i){
 		// Obtain lock on the queue
 		pthread_mutex_lock(&access_queue);
 
+		// Make sure the queue is not empty
 		if (head == NULL){
+			// If the queue is empty release the lock
 			pthread_mutex_unlock(&access_queue);
+
+			// If there are also no remaining products to create then exit
 			if (remaining_products <= 0)
 				pthread_exit(NULL);
 		} else {
@@ -164,7 +168,4 @@ void* consumer(int* i){
 		// Sleep for 100 milliseconds
 		usleep(100000);
 	}
-
-	// The queue is empty and there are no more products for the producers to produce so exit
- 	pthread_exit(NULL);
 }
