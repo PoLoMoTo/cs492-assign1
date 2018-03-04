@@ -30,6 +30,8 @@ int algorithm = 0;
 int quantum = 0;
 
 pthread_mutex_t access_queue;
+pthread_cond_t notFull;
+pthread_cond_t notEmpty;
 
 int fibonacci(int n){
 	if (n == 0)
@@ -79,6 +81,10 @@ int main(int argc, char const *argv[]){
 	// Initialize the queue lock
 	pthread_mutex_init(&access_queue, NULL);
 
+	// Initialize The condition variables
+	pthread_cond_init (&notFull, NULL);
+	pthread_cond_init (&notEmpty, NULL);
+
 	// Create threads for the consumers and producers
 	pthread_t prod_thread[prodThreads];
 	pthread_t consum_thread[consumThreads];
@@ -113,12 +119,17 @@ void* producer(int* i){
 		// Obtain lock on the queue
 		pthread_mutex_lock(&access_queue);
 
+		// Wait for signal
+		while (queueLength() >= maxQueue)
+			pthread_cond_wait(&notFull, &access_queue);
+
 		// Make sure there are more products
 		if (remaining_products <= 0){
 			// No more products to produce, release the queue and exit thread
 			pthread_mutex_unlock(&access_queue);
- 			pthread_exit(NULL);
-		} else if (maxQueue == 0 || queueLength() < maxQueue){
+			printf("Producer %d exiting\n", *i);
+			pthread_exit(NULL);
+		} else {
 			// Create the new product
 			struct product* new_product = malloc(sizeof(struct product));
 			new_product->productID = remaining_products;
@@ -140,10 +151,13 @@ void* producer(int* i){
 			remaining_products--;
 
 			printf("Producer #%d produced product #%d with queue length: %d\n", *i, new_product->productID, queueLength());
-		}
 
-		// Release the lock on the queue
-		pthread_mutex_unlock(&access_queue);
+			// Release the lock on the queue
+			pthread_mutex_unlock(&access_queue);
+
+			// Signal that the queue is not empty
+			pthread_cond_signal(&notEmpty);
+		}
 
 		// Sleep for 100 milliseconds
 		usleep(100000);
@@ -155,68 +169,93 @@ void* consumer(int* i){
 		// Obtain lock on the queue
 		pthread_mutex_lock(&access_queue);
 
-		// Make sure the queue is not empty
-		if (head == NULL){
-			// If the queue is empty release the lock
-			pthread_mutex_unlock(&access_queue);
-
-			// If there are also no remaining products to create then exit
-			if (remaining_products <= 0)
+		// Wait for signal if all items are not consumed
+		while (head == NULL){
+			if (remaining_products <= 0){
+				pthread_mutex_unlock(&access_queue);
+				printf("Consumer %d exiting\n", *i);
 				pthread_exit(NULL);
-		} else {
-			// Pull first item from the queue
-			struct product* current_product = head;
-			head = current_product->next;
+			} else {
+				pthread_cond_wait(&notEmpty, &access_queue);
+			}
+		}
 
-			if (algorithm == 0){
-				// Consume the product
+		// Pull first item from the queue
+		struct product* current_product = head;
+		head = current_product->next;
+
+		if (algorithm == 0){
+			// Consume the product
+			for (int i = 0; i < current_product->life; i++)
+				fibonacci(10);
+
+			printf("Consumer #%d consumed product #%d with life #%d\n", *i, current_product->productID, current_product->life);
+
+			// Free the pulled node
+			free(current_product);
+
+			// Unlock the queue and signal
+			pthread_mutex_unlock(&access_queue);
+			if (head == NULL && remaining_products <= 0){
+				pthread_cond_signal(&notEmpty);
+				pthread_exit(NULL);
+			} else if (remaining_products <= 0)
+				pthread_cond_signal(&notEmpty);
+			else
+				pthread_cond_signal(&notFull);
+
+		} else {
+			// Consume the product the quantum amount
+			if (current_product->life - quantum < 0){
 				for (int i = 0; i < current_product->life; i++)
 					fibonacci(10);
 
-				printf("Consumer #%d consumed product #%d with life #%d\n", *i, current_product->productID, current_product->life);
-
-				// Free the pulled node
-				free(current_product);
+				// Decrement the product's life counter
+				current_product->life = 0;
 			} else {
-				// Consume the product the quantum amount
-				if (current_product->life - quantum < 0){
-					for (int i = 0; i < current_product->life; i++)
-						fibonacci(10);
+				for (int i = 0; i < quantum; i++)
+					fibonacci(10);
 
-					// Decrement the product's life counter
-					current_product->life = 0;
-				} else {
-					for (int i = 0; i < quantum; i++)
-						fibonacci(10);
-
-					// Decrement the product's life counter
-					current_product->life -= quantum;
-				}
-
-				// If the product's life is over free it, otherwise add it back to the end of the queue
-				if (current_product->life <= 0){
-					printf("Consumer #%d consumed product #%d with life #%d --DESTROYED--\n", *i, current_product->productID, current_product->life);
-					free(current_product);
-				} else {
-					// Reset the product's next since it is going to the end of the queue
-					current_product->next = NULL;
-
-					// Put the product at the end of the queue (or the head if the queue is now empty)
-					if (head != NULL){
-						struct product* last = head;
-						while (last->next != NULL)
-							last = last->next;
-						last->next = current_product;
-					} else {
-						head = current_product;
-					}
-
-					printf("Consumer #%d consumed product #%d with life #%d\n", *i, current_product->productID, current_product->life);
-				}
+				// Decrement the product's life counter
+				current_product->life -= quantum;
 			}
 
-			// Release the lock on the queue
-			pthread_mutex_unlock(&access_queue);
+			// If the product's life is over free it, otherwise add it back to the end of the queue
+			if (current_product->life <= 0){
+				printf("Consumer #%d consumed product #%d with life #%d --DESTROYED--\n", *i, current_product->productID, current_product->life);
+				free(current_product);
+
+				// If this was the last item then exit otherwise unlock and signal
+				if (remaining_products <= 0){
+					pthread_mutex_unlock(&access_queue);
+					if (head != NULL)
+						pthread_cond_signal(&notEmpty);
+					printf("Consumer %d exiting\n", *i);
+					pthread_exit(NULL);
+				} else {
+					pthread_mutex_unlock(&access_queue);
+					pthread_cond_signal(&notFull);
+				}
+			} else {
+				// Reset the product's next since it is going to the end of the queue
+				current_product->next = NULL;
+
+				// Put the product at the end of the queue (or the head if the queue is now empty)
+				if (head != NULL){
+					struct product* last = head;
+					while (last->next != NULL)
+						last = last->next;
+					last->next = current_product;
+				} else {
+					head = current_product;
+				}
+
+				printf("Consumer #%d consumed product #%d with life #%d\n", *i, current_product->productID, current_product->life);
+
+				// Release the lock on the queue and signal
+				pthread_mutex_unlock(&access_queue);
+				pthread_cond_signal(&notEmpty);
+			}
 		}
 
 		// Sleep for 100 milliseconds
