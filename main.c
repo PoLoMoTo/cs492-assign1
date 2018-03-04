@@ -15,6 +15,8 @@ struct product {
 struct product* head = NULL;
 int remaining_products = 0;
 int maxQueue = 0;
+int algorithm = 0;
+int quantum = 0;
 
 pthread_mutex_t access_queue;
 
@@ -51,8 +53,8 @@ int main(int argc, char const *argv[]){
 	int consumThreads = strtol(argv[2], NULL, 10);
 	remaining_products = strtol(argv[3], NULL, 10);
 	maxQueue = strtol(argv[4], NULL, 10);
-	int algorithm = *argv[5]; // 0 = FCFS and 1 = RR
-	int quantum = *argv[6];
+	algorithm = *argv[5]; // 0 = FCFS and 1 = RR
+	quantum = *argv[6];
 	unsigned int seed = strtol(argv[7], NULL, 10);
 
 	// Initialize the random number generator with the seed
@@ -122,10 +124,10 @@ void* producer(int* i){
 			remaining_products--;
 
 			printf("Producer #%d produced product #%d\n", *i, new_product->productID);
-		}
 
-		// Release the lock on the queue
-		pthread_mutex_unlock(&access_queue);
+			// Release the lock on the queue
+			pthread_mutex_unlock(&access_queue);
+		}
 
 		// Sleep for 100 milliseconds
 		usleep(100000);
@@ -133,25 +135,31 @@ void* producer(int* i){
 }
 
 void* consumer(int* i){
-	while (head != NULL || remaining_products){
+	while (1){
 		// Obtain lock on the queue
 		pthread_mutex_lock(&access_queue);
 
-		// Pull first item from the queue
-		struct product* current_product = head;
-		head = current_product->next;
+		if (head == NULL){
+			pthread_mutex_unlock(&access_queue);
+			if (remaining_products <= 0)
+				pthread_exit(NULL);
+		} else {
+			// Pull first item from the queue
+			struct product* current_product = head;
+			head = current_product->next;
 
-		// Release the lock on the queue
-		pthread_mutex_unlock(&access_queue);
+			// Release the lock on the queue
+			pthread_mutex_unlock(&access_queue);
 
-		// Consume the product
-		for (int i = 0; i < current_product->life; i++){
-			fibonacci(10);
+			// Consume the product
+			for (int i = 0; i < current_product->life; i++){
+				fibonacci(10);
+			}
+			printf("Consumer #%d consumed product #%d with life #%d\n", *i, current_product->productID, current_product->life);
+
+			// Free the pulled node
+			free(current_product);
 		}
-		printf("Consumer #%d consumed product #%d with life #%d\n", *i, current_product->productID, current_product->life);
-
-		// Free the pulled node
-		free(current_product);
 
 		// Sleep for 100 milliseconds
 		usleep(100000);
