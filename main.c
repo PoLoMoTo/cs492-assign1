@@ -12,10 +12,21 @@ struct product {
 	struct product* next;
 };
 
+// Head of the queue
 struct product* head = NULL;
+
+// Remaining products to produce
 int remaining_products = 0;
+// Don't need to track products to consume, if the queue is empty and there are no
+// more products to be produced then all products must have been consumed.
+
+// Maximum length for the queue
 int maxQueue = 0;
+
+// Algorithm to use, 0 for FCFS, 1 for Round Robin
 int algorithm = 0;
+
+// Quantum time for the Round Robin algorithm
 int quantum = 0;
 
 pthread_mutex_t access_queue;
@@ -53,9 +64,14 @@ int main(int argc, char const *argv[]){
 	int consumThreads = strtol(argv[2], NULL, 10);
 	remaining_products = strtol(argv[3], NULL, 10);
 	maxQueue = strtol(argv[4], NULL, 10);
-	algorithm = *argv[5]; // 0 = FCFS and 1 = RR
-	quantum = *argv[6];
+	algorithm = strtol(argv[5], NULL, 10); // 0 = FCFS and 1 = RR
+	quantum = strtol(argv[6], NULL, 10);
 	unsigned int seed = strtol(argv[7], NULL, 10);
+
+	if (algorithm)
+		printf("-----ROUND ROBIN-----\n");
+	else
+		printf("-----FCFS-----\n");
 
 	// Initialize the random number generator with the seed
 	srand(seed);
@@ -123,11 +139,11 @@ void* producer(int* i){
 			// Decrement the count of remaining products to produce
 			remaining_products--;
 
-			printf("Producer #%d produced product #%d\n", *i, new_product->productID);
-
-			// Release the lock on the queue
-			pthread_mutex_unlock(&access_queue);
+			printf("Producer #%d produced product #%d with queue length: %d\n", *i, new_product->productID, queueLength());
 		}
+
+		// Release the lock on the queue
+		pthread_mutex_unlock(&access_queue);
 
 		// Sleep for 100 milliseconds
 		usleep(100000);
@@ -152,17 +168,55 @@ void* consumer(int* i){
 			struct product* current_product = head;
 			head = current_product->next;
 
+			if (algorithm == 0){
+				// Consume the product
+				for (int i = 0; i < current_product->life; i++)
+					fibonacci(10);
+
+				printf("Consumer #%d consumed product #%d with life #%d\n", *i, current_product->productID, current_product->life);
+
+				// Free the pulled node
+				free(current_product);
+			} else {
+				// Consume the product the quantum amount
+				if (current_product->life - quantum < 0){
+					for (int i = 0; i < current_product->life; i++)
+						fibonacci(10);
+
+					// Decrement the product's life counter
+					current_product->life = 0;
+				} else {
+					for (int i = 0; i < quantum; i++)
+						fibonacci(10);
+
+					// Decrement the product's life counter
+					current_product->life -= quantum;
+				}
+
+				// If the product's life is over free it, otherwise add it back to the end of the queue
+				if (current_product->life <= 0){
+					printf("Consumer #%d consumed product #%d with life #%d --DESTROYED--\n", *i, current_product->productID, current_product->life);
+					free(current_product);
+				} else {
+					// Reset the product's next since it is going to the end of the queue
+					current_product->next = NULL;
+
+					// Put the product at the end of the queue (or the head if the queue is now empty)
+					if (head != NULL){
+						struct product* last = head;
+						while (last->next != NULL)
+							last = last->next;
+						last->next = current_product;
+					} else {
+						head = current_product;
+					}
+
+					printf("Consumer #%d consumed product #%d with life #%d\n", *i, current_product->productID, current_product->life);
+				}
+			}
+
 			// Release the lock on the queue
 			pthread_mutex_unlock(&access_queue);
-
-			// Consume the product
-			for (int i = 0; i < current_product->life; i++){
-				fibonacci(10);
-			}
-			printf("Consumer #%d consumed product #%d with life #%d\n", *i, current_product->productID, current_product->life);
-
-			// Free the pulled node
-			free(current_product);
 		}
 
 		// Sleep for 100 milliseconds
