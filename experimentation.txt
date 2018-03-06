@@ -158,3 +158,182 @@ Minimum wait time: 0.000196 seconds
 Maximum wait time: 0.012172 seconds
 Producer throughput: 1188.131348 products per minute
 Consumer throughput: 1188.107788 products per minute
+
+./assign1 4 4 100 10 1 50 12203
+Total processing time: 0.418929 minutes
+Average turn around time: 2.666674 seconds
+Minimum turn around time: 0.000232 seconds
+Maximum turn around time: 5.707619 seconds
+Average wait time: 2.666602 seconds
+Minimum wait time: 0.000226 seconds
+Maximum wait time: 5.707469 seconds
+Producer throughput: 257.140808 products per minute
+Consumer throughput: 238.707306 products per minute
+Total processing time: 0.424698 minutes
+Average turn around time: 2.679461 seconds
+Minimum turn around time: 0.003825 seconds
+Maximum turn around time: 5.826036 seconds
+Average wait time: 2.678176 seconds
+Minimum wait time: 0.003365 seconds
+Maximum wait time: 5.823541 seconds
+Producer throughput: 254.569778 products per minute
+Consumer throughput: 236.421707 products per minute
+Total processing time: 0.424010 minutes
+Average turn around time: 2.676236 seconds
+Minimum turn around time: 0.003340 seconds
+Maximum turn around time: 5.820081 seconds
+Average wait time: 2.675010 seconds
+Minimum wait time: 0.003066 seconds
+Maximum wait time: 5.818091 seconds
+Producer throughput: 254.635590 products per minute
+Consumer throughput: 236.934189 products per minute
+ 
+
+./assign1 4 4 100 10 1 300 12203
+Total processing time: 0.063461 minutes
+Average turn around time: 0.363764 seconds
+Minimum turn around time: 0.000317 seconds
+Maximum turn around time: 0.801459 seconds
+Average wait time: 0.363699 seconds
+Minimum wait time: 0.000314 seconds
+Maximum wait time: 0.801331 seconds
+Producer throughput: 1710.697266 products per minute
+Consumer throughput: 1575.846313 products per minute
+Total processing time: 0.090143 minutes
+Average turn around time: 0.542798 seconds
+Minimum turn around time: 0.000119 seconds
+Maximum turn around time: 1.102213 seconds
+Average wait time: 0.542748 seconds
+Minimum wait time: 0.000116 seconds
+Maximum wait time: 1.102058 seconds
+Producer throughput: 1247.812744 products per minute
+Consumer throughput: 1109.382690 products per minute
+Total processing time: 0.090172 minutes
+Average turn around time: 0.543948 seconds
+Minimum turn around time: 0.000290 seconds
+Maximum turn around time: 1.101904 seconds
+Average wait time: 0.543888 seconds
+Minimum wait time: 0.000286 seconds
+Maximum wait time: 1.101747 seconds
+Producer throughput: 1247.408569 products per minute
+Consumer throughput: 1109.049316 products per minute
+
+ 
+./assign1 10 2 100 10 1 50 12203
+Total processing time: 0.845526 minutes
+Average turn around time: 5.376323 seconds
+Minimum turn around time: 0.128750 seconds
+Maximum turn around time: 11.629608 seconds
+Average wait time: 5.374796 seconds
+Minimum wait time: 0.127646 seconds
+Maximum wait time: 11.626425 seconds
+Producer throughput: 128.001694 products per minute
+Consumer throughput: 118.889343 products per minute
+Total processing time: 0.838220 minutes
+Average turn around time: 5.359794 seconds
+Minimum turn around time: 0.100498 seconds
+Maximum turn around time: 11.620989 seconds
+Average wait time: 5.359732 seconds
+Minimum wait time: 0.100495 seconds
+Maximum wait time: 11.620882 seconds
+Producer throughput: 129.069778 products per minute
+Consumer throughput: 119.301971 products per minute
+Total processing time: 0.838151 minutes
+Average turn around time: 5.359289 seconds
+Minimum turn around time: 0.100412 seconds
+Maximum turn around time: 11.518578 seconds
+Average wait time: 5.359228 seconds
+Minimum wait time: 0.100408 seconds
+Maximum wait time: 11.518467 seconds
+Producer throughput: 129.080536 products per minute
+Consumer throughput: 119.312263 products per minute
+
+
+./assign1 10 2 100 10 1 300 12203
+Total processing time: 0.246217 minutes
+Average turn around time: 1.533474 seconds
+Minimum turn around time: 0.165706 seconds
+Maximum turn around time: 3.334585 seconds
+Average wait time: 1.532085 seconds
+Minimum wait time: 0.165084 seconds
+Maximum wait time: 3.331414 seconds
+Producer throughput: 451.092896 products per minute
+Consumer throughput: 413.651611 products per minute
+Total processing time: 0.178654 minutes
+Average turn around time: 1.128892 seconds
+Minimum turn around time: 0.000533 seconds
+Maximum turn around time: 2.204127 seconds
+Average wait time: 1.128841 seconds
+Minimum wait time: 0.000517 seconds
+Maximum wait time: 2.203951 seconds
+Producer throughput: 623.822144 products per minute
+Consumer throughput: 559.763000 products per minute
+Total processing time: 0.178645 minutes
+Average turn around time: 1.128861 seconds
+Minimum turn around time: 0.000711 seconds
+Maximum turn around time: 2.203602 seconds
+Average wait time: 1.128813 seconds
+Minimum wait time: 0.000694 seconds
+Maximum wait time: 2.203520 seconds
+Producer throughput: 617.444397 products per minute
+Consumer throughput: 559.791992 products per minute
+
+
+./assign1 2 10 100 10 1 50 12203
+Total processing time: 0.173568 minutes
+Average turn around time: 1.034023 seconds
+Minimum turn around time: 0.078362 seconds
+Maximum turn around time: 2.306964 seconds
+Average wait time: 1.032880 seconds
+Minimum wait time: 0.078330 seconds
+Maximum wait time: 2.305035 seconds
+Producer throughput: 621.124084 products per minute
+Consumer throughput: 579.072693 products per minute
+Total processing time: 0.168610 minutes
+Average turn around time: 1.014566 seconds
+Minimum turn around time: 0.000309 seconds
+Maximum turn around time: 2.303503 seconds
+Average wait time: 1.014508 seconds
+Minimum wait time: 0.000306 seconds
+Maximum wait time: 2.303409 seconds
+Producer throughput: 644.099182 products per minute
+Consumer throughput: 593.091919 products per minute
+Total processing time: 0.168613 minutes
+Average turn around time: 1.015521 seconds
+Minimum turn around time: 0.000102 seconds
+Maximum turn around time: 2.203436 seconds
+Average wait time: 1.015463 seconds
+Minimum wait time: 0.000099 seconds
+Maximum wait time: 2.203307 seconds
+Producer throughput: 644.097900 products per minute
+Consumer throughput: 593.081909 products per minute
+
+ 
+./assign1 2 10 100 10 1 300 12203
+Total processing time: 0.087764 minutes
+Average turn around time: 0.003943 seconds
+Minimum turn around time: 0.000179 seconds
+Maximum turn around time: 0.095964 seconds
+Average wait time: 0.002467 seconds
+Minimum wait time: 0.000108 seconds
+Maximum wait time: 0.093268 seconds
+Producer throughput: 1142.042236 products per minute
+Consumer throughput: 1151.130737 products per minute
+Total processing time: 0.083483 minutes
+Average turn around time: 0.000152 seconds
+Minimum turn around time: 0.000028 seconds
+Maximum turn around time: 0.000477 seconds
+Average wait time: 0.000093 seconds
+Minimum wait time: 0.000018 seconds
+Maximum wait time: 0.000312 seconds
+Producer throughput: 1197.976196 products per minute
+Consumer throughput: 1197.909668 products per minute
+Total processing time: 0.083490 minutes
+Average turn around time: 0.000165 seconds
+Minimum turn around time: 0.000024 seconds
+Maximum turn around time: 0.000417 seconds
+Average wait time: 0.000104 seconds
+Minimum wait time: 0.000017 seconds
+Maximum wait time: 0.000346 seconds
+Producer throughput: 1197.795654 products per minute
+Consumer throughput: 1197.779541 products per minute

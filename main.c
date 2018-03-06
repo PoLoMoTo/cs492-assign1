@@ -199,7 +199,7 @@ void* producer(int* i){
 
 		// Wait for signal
 		if (maxQueue != 0)
-			while (queueLength() >= maxQueue)
+			while (queueLength() >= maxQueue && remaining_products > 0)
 				pthread_cond_wait(&notFull, &access_queue);
 
 		// Make sure there are more products
@@ -236,6 +236,12 @@ void* producer(int* i){
 
 			// Signal that the queue is not empty
 			pthread_cond_signal(&notEmpty);
+
+			// Make sure other threads aren't stuck waiting for the conditional
+			if (remaining_products <= 0){
+				pthread_cond_signal(&notFull);
+				pthread_exit(NULL);
+			}
 		}
 
 		// Sleep for 100 milliseconds
