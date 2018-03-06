@@ -9,7 +9,8 @@ OBJ=$(addprefix $(SRCPATH), $(SRC:.c=.o))
 
 RM=rm -f
 INCPATH=includes
-CFLAGS+=-g3
+CFLAGS+=-g3 -std=c99 -std=gnu99
+CC = gcc
 
 all: $(OBJ)
 	gcc $(OBJ) -o $(NAME) -lpthread

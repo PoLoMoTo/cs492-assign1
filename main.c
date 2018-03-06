@@ -274,18 +274,19 @@ void* consumer(int* i){
 			struct timeval endConsumeTime;
 			gettimeofday(&endConsumeTime, NULL);
 
-			// Save the consume time
+			// Save the consume and finish times
+			// These need to include micro seconds because consuming will always take less than 1 second and if only whole seconds are used
+			// the consume time will be rounded down to zero.  This would make half of the statistics completely useless.
 			consumptionTime[current_product->productID-1] += (double)((1000000 * endConsumeTime.tv_sec + endConsumeTime.tv_usec) - (1000000 * startConsumeTime.tv_sec + startConsumeTime.tv_usec))/1000000;
-
-			// Save the finish time
 			turnAroundTime[current_product->productID-1] = (double)((1000000 * endConsumeTime.tv_sec + endConsumeTime.tv_usec) - (1000000 * current_product->timeGenerated.tv_sec + current_product->timeGenerated.tv_usec))/1000000;
 
+			// Print that this consumer consumed the current product
 			printf("Consumer #%d consumed product #%d\n", *i, current_product->productID);
 
 			// Free the pulled node
 			free(current_product);
 
-			// Unlock the queue and signal
+			// Unlock the queue, signal and exit if no products are left
 			pthread_mutex_unlock(&access_queue);
 			if (head == NULL && remaining_products <= 0){
 				pthread_cond_signal(&notEmpty);
@@ -302,6 +303,7 @@ void* consumer(int* i){
 				struct timeval startConsumeTime;
 				gettimeofday(&startConsumeTime, NULL);
 
+				// Do the math
 				for (int i = 0; i < current_product->life; i++)
 					fibonacci(10);
 
@@ -319,6 +321,7 @@ void* consumer(int* i){
 				struct timeval startConsumeTime;
 				gettimeofday(&startConsumeTime, NULL);
 
+				// Do the math
 				for (int i = 0; i < quantum; i++)
 					fibonacci(10);
 
@@ -342,7 +345,10 @@ void* consumer(int* i){
 				// Save the finish time
 				turnAroundTime[current_product->productID-1] = (float)((1000000 * endConsumeTime.tv_sec + endConsumeTime.tv_usec) - (1000000 * current_product->timeGenerated.tv_sec + current_product->timeGenerated.tv_usec))/1000000;
 
+				// Print that this consumer consumed the current product
 				printf("Consumer #%d consumed product #%d\n", *i, current_product->productID);
+
+				// Free the product as it is dead
 				free(current_product);
 
 				// If this was the last item then exit otherwise unlock and signal
@@ -370,6 +376,7 @@ void* consumer(int* i){
 					head = current_product;
 				}
 
+				// Print that this consumer consumed the current product
 				printf("Consumer #%d consumed product #%d\n", *i, current_product->productID);
 
 				// Release the lock on the queue and signal
