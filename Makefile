@@ -58,7 +58,7 @@ test: fclean all
 	./$(NAME) 40 10 1000 50 1 100 23492 > stat9rr.txt
 	./$(NAME) 10 10 1000 100 1 100 23492 > stat10rr.txt
 	./$(NAME) 10 10 1000 20 1 100 23492 > stat11rr.txt
-	./$(NAME) 10 10 1000 500 1 100 23492 > stat11rr.txt
-	./$(NAME) 10 10 1000 50 1 50  23492 > stat2rr.txt
-	./$(NAME) 10 10 1000 50 1 200 23492 > stat2rr.txt
-	./$(NAME) 10 10 1000 50 1 700 23492 > stat2rr.txt
+	./$(NAME) 10 10 1000 500 1 100 23492 > stat12rr.txt
+	./$(NAME) 10 10 1000 50 1 50  23492 > stat13rr.txt
+	./$(NAME) 10 10 1000 50 1 200 23492 > stat14rr.txt
+	./$(NAME) 10 10 1000 50 1 700 23492 > stat15rr.txt
