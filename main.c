@@ -5,6 +5,7 @@
 #include <errno.h>
 #include <stdlib.h>
 
+// Struct product queue
 struct product {
 	int productID;
 	struct timeval timeGenerated;
@@ -197,8 +198,9 @@ void* producer(int* i){
 		pthread_mutex_lock(&access_queue);
 
 		// Wait for signal
-		while (queueLength() >= maxQueue)
-			pthread_cond_wait(&notFull, &access_queue);
+		if (maxQueue != 0)
+			while (queueLength() >= maxQueue)
+				pthread_cond_wait(&notFull, &access_queue);
 
 		// Make sure there are more products
 		if (remaining_products <= 0){
