@@ -1,0 +1,160 @@
+4 producers and 4 consumers, queue size 10, 100 products, FCFS:
+
+Total Processing Time: 0.011773 minutes
+Average Turnaround Time: 0.00142 seconds
+Min Turnaround Time: 0.000532 seconds
+Max Turnaround Time: 0.003979 seconds
+Average Wait Time: 0.001386 seconds
+Min Wait Time: 0.000499 seconds
+Max Wait Time: 0.003931 seconds
+Producer Throughput: 2123.980957 products per minute
+Consumer Throughput: 2125.961670 products per minute
+
+Total Processing Time: 0.011774 minutes
+Average Turnaround Time: 0.011193 seconds
+Min Turnaround Time: 0.005122 seconds
+Max Turnaround Time: 0.015730 seconds
+Average Wait Time: 0.011160 seconds
+Min Wait Time: 0.005115 seconds
+Max Wait Time: 0.015667 seconds
+Producer Throughput: 2123.620117 products per minute
+Consumer Throughput: 2126.504395 products per minute
+
+Total processing time: 0.011786 minutes
+Average turn around time: 0.001085 seconds
+Minimum turn around time: 0.000419 seconds
+Maximum turn around time: 0.001584 seconds
+Average wait time: 0.001042 seconds
+Minimum wait time: 0.000370 seconds
+Maximum wait time: 0.001539 seconds
+Producer throughput: 2121.634766 products per minute
+Consumer throughput: 2123.295654 products per minute
+
+10 producers and 2 consumers, queue size 10, 100 products, FCFS:
+
+Total processing time: 0.008637 minutes
+Average turn around time: 0.207065 seconds
+Minimum turn around time: 0.012232 seconds
+Maximum turn around time: 0.404648 seconds
+Average wait time: 0.207028 seconds
+Minimum wait time: 0.012181 seconds
+Maximum wait time: 0.404646 seconds
+Producer throughput: 5263.342773 products per minute
+Consumer throughput: 1164.078857 products per minute 
+
+Total processing time: 0.008836 minutes
+Average turn around time: 0.219250 seconds
+Minimum turn around time: 0.020572 seconds
+Maximum turn around time: 0.420555 seconds
+Average wait time: 0.219211 seconds
+Minimum wait time: 0.020532 seconds
+Maximum wait time: 0.420479 seconds
+Producer throughput: 4871.948730 products per minute
+Consumer throughput: 1142.243530 products per minute
+
+Total processing time: 0.008612 minutes
+Average turn around time: 0.207209 seconds
+Minimum turn around time: 0.011282 seconds
+Maximum turn around time: 0.404313 seconds
+Average wait time: 0.207169 seconds
+Minimum wait time: 0.011247 seconds
+Maximum wait time: 0.404311 seconds
+Producer throughput: 5311.614746 products per minute
+Consumer throughput: 1166.990601 products per minute 
+
+10 producers and 2 consumers, queue size 100, 1000 products, FCFS:
+
+
+Total processing time: 0.084143 minutes
+Average turn around time: 2.019542 seconds
+Minimum turn around time: 0.004705 seconds
+Maximum turn around time: 4.033666 seconds
+Average wait time: 2.019504 seconds
+Minimum wait time: 0.004654 seconds
+Maximum wait time: 4.033628 seconds
+Producer throughput: 5895.351562 products per minute
+Consumer throughput: 1189.136963 products per minute
+
+Total processing time: 0.085162 minutes
+Average turn around time: 2.056882 seconds
+Minimum turn around time: 0.006358 seconds
+Maximum turn around time: 4.074031 seconds
+Average wait time: 2.056846 seconds
+Minimum wait time: 0.006322 seconds
+Maximum wait time: 4.074009 seconds
+Producer throughput: 5582.823242 products per minute
+Consumer throughput: 1174.953003 products per minute
+
+Total processing time: 0.084217 minutes
+Average turn around time: 2.022125 seconds
+Minimum turn around time: 0.008472 seconds
+Maximum turn around time: 4.034706 seconds
+Average wait time: 2.022091 seconds
+Minimum wait time: 0.008436 seconds
+Maximum wait time: 4.034666 seconds
+Producer throughput: 5874.778809 products per minute
+Consumer throughput: 1187.995361 products per minute
+
+2 producers and 10 consumers, queue size 10, 100 products, FCFS:
+
+Total processing time: 0.042123 minutes
+Average turn around time: 0.000882 seconds
+Minimum turn around time: 0.000351 seconds
+Maximum turn around time: 0.002172 seconds
+Average wait time: 0.000833 seconds
+Minimum wait time: 0.000324 seconds
+Maximum wait time: 0.002096 seconds
+Producer throughput: 1187.321777 products per minute
+Consumer throughput: 1187.130127 products per minute
+
+Total processing time: 0.042087 minutes
+Average turn around time: 0.000784 seconds
+Minimum turn around time: 0.000289 seconds
+Maximum turn around time: 0.006495 seconds
+Average wait time: 0.000741 seconds
+Minimum wait time: 0.000284 seconds
+Maximum wait time: 0.006488 seconds
+Producer throughput: 1188.140991 products per minute
+Consumer throughput: 1188.229858 products per minute
+
+Total processing time: 0.042044 minutes
+Average turn around time: 0.000602 seconds
+Minimum turn around time: 0.000289 seconds
+Maximum turn around time: 0.001197 seconds
+Average wait time: 0.000555 seconds
+Minimum wait time: 0.000232 seconds
+Maximum wait time: 0.001116 seconds
+Producer throughput: 1189.315186 products per minute
+Consumer throughput: 1189.322754 products per minute
+
+2 producers and 10 consumers, queue size 100, 1000 products, FCFS:
+
+Total processing time: 0.420452 minutes
+Average turn around time: 0.000672 seconds
+Minimum turn around time: 0.000098 seconds
+Maximum turn around time: 0.003173 seconds
+Average wait time: 0.000629 seconds
+Minimum wait time: 0.000085 seconds
+Maximum wait time: 0.003115 seconds
+Producer throughput: 1189.226929 products per minute
+Consumer throughput: 1189.212524 products per minute
+
+Total processing time: 0.420430 minutes
+Average turn around time: 0.000681 seconds
+Minimum turn around time: 0.000099 seconds
+Maximum turn around time: 0.002953 seconds
+Average wait time: 0.000637 seconds
+Minimum wait time: 0.000086 seconds
+Maximum wait time: 0.002948 seconds
+Producer throughput: 1189.272339 products per minute
+Consumer throughput: 1189.269653 products per minute
+
+Total processing time: 0.420841 minutes
+Average turn around time: 0.000725 seconds
+Minimum turn around time: 0.000248 seconds
+Maximum turn around time: 0.012269 seconds
+Average wait time: 0.000681 seconds
+Minimum wait time: 0.000196 seconds
+Maximum wait time: 0.012172 seconds
+Producer throughput: 1188.131348 products per minute
+Consumer throughput: 1188.107788 products per minute
