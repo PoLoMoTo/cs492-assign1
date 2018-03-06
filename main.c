@@ -252,6 +252,7 @@ void* consumer(int* i){
 		while (head == NULL){
 			if (remaining_products <= 0){
 				pthread_mutex_unlock(&access_queue);
+				pthread_cond_signal(&notEmpty);
 				pthread_exit(NULL);
 			} else
 				pthread_cond_wait(&notEmpty, &access_queue);
